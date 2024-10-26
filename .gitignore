@@ -1,0 +1,9 @@
+.env
+.vscode
+dummy-cv
+vendor
+coverage.out
+*.log
+tmp/
+dummy-cv.postman_collection.json
+dummy-cv.postman_environment.json
