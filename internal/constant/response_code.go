@@ -15,4 +15,5 @@ var (
 	ResponseErrorNotFound       = general.ResponseCode{Code: "NF", Description: "Data Not Found", Status: http.StatusNotFound}
 	ResponseInternalServerError = general.ResponseCode{Code: "IS", Description: "Something went wrong, try again later", Status: http.StatusInternalServerError}
 	ResponseBadRequest          = general.ResponseCode{Code: "BR", Description: "Bad Request", Status: http.StatusBadRequest}
+	ResponseInvalidBase64       = general.ResponseCode{Code: "B64", Description: "Invalid Base 64", Status: http.StatusBadRequest}
 )

@@ -23,6 +23,7 @@ func NewRouter(e *echo.Echo, handler *app.Handlers, middleware *app.Middleware) 
 	e.Use(middleware.HttpWrapper.HttpWrapper())
 
 	RegisterProfileRoutes(router)
+	RegisterProfilePhotoRoutes(router)
 
 	return router
 }
@@ -32,5 +33,13 @@ func RegisterProfileRoutes(router *Router) {
 	profileGroup.GET("/:code", router.Handler.Profile.HanmdleGetProfile)
 	profileGroup.POST("", router.Handler.Profile.HandleCreateProfile)
 	profileGroup.PUT("/:code", router.Handler.Profile.HandleUpdateProfile)
+
+}
+
+func RegisterProfilePhotoRoutes(router *Router) {
+	profilePhotoGroup := router.Echo.Group("api/photo")
+	profilePhotoGroup.PUT("/:code", router.Handler.ProfilePhoto.HandleUpsertPhotoProfile)
+	profilePhotoGroup.GET("/:code", router.Handler.ProfilePhoto.HandleDownloadPhotoData)
+	profilePhotoGroup.DELETE("/:code", router.Handler.ProfilePhoto.HandleDeleteProfilePhoto)
 
 }

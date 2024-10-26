@@ -3,7 +3,6 @@ package profile
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ramasuryananda/dummy-cv/internal/constant"
@@ -77,7 +76,6 @@ func (uc *UseCase) CreateUserProfile(ctx context.Context, req request.CreateProf
 
 	profileCode, err := uc.profileRepository.InsertProfile(ctx, userProfile)
 	if err != nil {
-		fmt.Println(err)
 		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
 		httpStatus = constant.ResponseInternalServerError.Status
 		return
@@ -133,7 +131,6 @@ func (uc *UseCase) UpdateUserProfile(ctx context.Context, req request.UpdateProf
 
 	profileCode, err := uc.profileRepository.UpdateProfile(ctx, updatedUserProfile)
 	if err != nil {
-		fmt.Println(err)
 		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
 		httpStatus = constant.ResponseInternalServerError.Status
 		return
