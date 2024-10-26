@@ -24,9 +24,6 @@ func (r *Repository) GetUserProfilePhotoByProfileCode(ctx context.Context, profi
 func (r *Repository) SaveUserProfilePhoto(ctx context.Context, profilePhoto entity.ProfilePhoto) (err error) {
 	result := r.db.Model(&profilePhoto).Save(&profilePhoto)
 	if err = result.Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = constant.ErrorDatabaseNotFound
-		}
 		return
 	}
 

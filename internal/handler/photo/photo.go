@@ -24,7 +24,7 @@ func (handler *Handler) HandleUpsertPhotoProfile(c echo.Context) error {
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.UpdateProfileRequest{})
+		trans := translator.TranslateError(err, request.UpsertPhotoProfileRequest{})
 		logger.Warning(ctx, nil, err, "c.Validate() error - HandleUpsertPhotoProfile")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)
@@ -45,7 +45,7 @@ func (handler *Handler) HandleDownloadPhotoData(c echo.Context) error {
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.UpdateProfileRequest{})
+		trans := translator.TranslateError(err, request.DownloadPhotoProfileRequest{})
 		logger.Warning(ctx, nil, err, "c.Validate() error - HandleDownloadPhotoData")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)
@@ -77,7 +77,7 @@ func (handler *Handler) HandleDeleteProfilePhoto(c echo.Context) error {
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.UpdateProfileRequest{})
+		trans := translator.TranslateError(err, request.DeletePhotoProfileRequest{})
 		logger.Warning(ctx, nil, err, "c.Validate() error - HandleDeleteProfilePhoto")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)

@@ -23,9 +23,6 @@ func (r *Repository) GetUserByProfileCode(ctx context.Context, profileCode int) 
 func (r *Repository) InsertProfile(ctx context.Context, profileData entity.Profile) (profileCode uint64, err error) {
 	result := r.db.Model(&profileData).Create(&profileData)
 	if err = result.Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = constant.ErrorDatabaseNotFound
-		}
 		return
 	}
 
