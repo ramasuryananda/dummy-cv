@@ -9,15 +9,16 @@ import (
 
 	"github.com/go-playground/validator"
 	app "github.com/ramasuryananda/dummy-cv/internal/app"
-	"github.com/ramasuryananda/dummy-cv/internal/pkg/clocker"
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/config"
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/customvalidator"
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	appLogger "github.com/ramasuryananda/dummy-cv/internal/pkg/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 const (
@@ -32,6 +33,8 @@ type Server struct {
 }
 
 func NewHTTP(ctx context.Context) *Server {
+
+	appLogger.Init(config.Get("APP_NAME"))
 
 	db, err := mysqlConnect()
 	if err != nil {
@@ -67,7 +70,6 @@ func (s *Server) Run() *http.Server {
 	// Allow CORS requests
 	e.Use(middleware.CORS())
 
-	e.GET("/", handleHelloWorld)
 	NewRouter(e, s.handler, s.middleware)
 
 	appPort := config.GetInt("APP_PORT", port)
@@ -84,10 +86,6 @@ func (s *Server) Run() *http.Server {
 	return s.http
 }
 
-func handleHelloWorld(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "Hello World : "+clocker.Now().String())
-}
-
 func mysqlConnect() (*gorm.DB, error) {
 	dbConnection := config.Get("DB_GORM_CONNECTION")
 	if dbConnection == "" {
@@ -95,10 +93,12 @@ func mysqlConnect() (*gorm.DB, error) {
 	}
 
 	dsn := dbConnection
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NowFunc: func() time.Time {
-			return clocker.Now()
+			return time.Now()
 		},
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 
 	if err != nil {

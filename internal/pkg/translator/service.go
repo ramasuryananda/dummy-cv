@@ -17,7 +17,7 @@ func TranslateError(err error, s interface{}) map[string]string {
 			case "required":
 				apiErrors[err.Field()] = fmt.Sprintf("%s is required", getTagName(reflect.TypeOf(s), err.Field()))
 			case "date":
-				apiErrors[err.Field()] = fmt.Sprintf("%s invalid date format, the date format should be DD/MM/YYYY", getTagName(reflect.TypeOf(s), err.Field()))
+				apiErrors[err.Field()] = fmt.Sprintf("%s invalid date format, the date format should be DD-MM-YYYY", getTagName(reflect.TypeOf(s), err.Field()))
 			case "oneof":
 				apiErrors[err.Field()] = fmt.Sprintf("%s is unknown", getTagName(reflect.TypeOf(s), err.Field()))
 			case "numeric":

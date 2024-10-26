@@ -29,10 +29,6 @@ func CustomValidaton(validation map[string]func(fl validator.FieldLevel) bool) e
 func ValidateDateFormat(fl validator.FieldLevel) bool {
 	dateStr := fl.Field().String()
 
-	if dateStr == "" || fl.Field().IsZero() {
-		return true
-	}
-
 	_, err := time.Parse(constant.DateFormatDDMMYYY, dateStr)
 	return err == nil
 }

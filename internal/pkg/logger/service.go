@@ -35,7 +35,7 @@ func Init(name string) {
 	enableLogging := config.Get(envEnableLogging)
 	loggingMode := config.GetWIthDefault(envLoggingMode, "file")
 
-	path := dir + name + ".log"
+	path := dir + "-" + name + ".log"
 	appName = name // set app name
 
 	logrus.SetLevel(logrus.TraceLevel)

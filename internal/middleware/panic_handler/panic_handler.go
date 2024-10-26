@@ -9,12 +9,9 @@ import (
 	"runtime"
 
 	"github.com/labstack/echo/v4"
+	"github.com/ramasuryananda/dummy-cv/internal/constant"
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/logger"
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/writer"
-)
-
-var (
-	errSomethingWentWrong = "terjadi kesalahan, mohon coba beberapa saat lagi"
 )
 
 type Field struct {
@@ -98,7 +95,7 @@ func (middleware *Middleware) HandlePanic() echo.MiddlewareFunc {
 				message := "**[PANIC]** " + errMsg
 				logger.Error(context.Background(), fields, errors.New(message), "panic error")
 
-				c.JSON(http.StatusBadGateway, writer.APIResponse(errSomethingWentWrong, false, nil))
+				c.JSON(constant.ResponseInternalServerError.Status, writer.APIResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, nil))
 			}()
 
 			return next(c)

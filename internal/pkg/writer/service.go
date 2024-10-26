@@ -1,15 +1,10 @@
 package writer
 
-import (
-	"errors"
-	"net/http"
+import "github.com/ramasuryananda/dummy-cv/internal/constant"
 
-	"github.com/ramasuryananda/dummy-cv/internal/pkg/exception"
-)
-
-func APIResponse(message string, status bool, data interface{}) Response {
+func APIResponse(code string, message string, data interface{}) Response {
 	jsonResponse := Response{
-		Status:  status,
+		Code:    code,
 		Message: message,
 		Data:    data,
 	}
@@ -17,27 +12,19 @@ func APIResponse(message string, status bool, data interface{}) Response {
 	return jsonResponse
 }
 
-func APIErrorResponse(message string, err error) (response Response, code int) {
-
-	code = http.StatusInternalServerError
-	var exception *exception.Exception
-	if errors.As(err, &exception) {
-		message = err.Error()
-		code = http.StatusBadRequest
-	}
-
+func APIErrorResponse(responseCode string, message string, err error) (response Response) {
 	jsonResponse := Response{
-		Status:  false,
+		Code:    responseCode,
 		Message: message,
 	}
 
-	return jsonResponse, code
+	return jsonResponse
 }
 
-func APIValidationResponse(message string, status bool, data interface{}, errors interface{}) ValidationResponse {
+func APIValidationResponse(data interface{}, errors interface{}) ValidationResponse {
 	jsonResponse := ValidationResponse{
-		Status:  status,
-		Message: message,
+		Code:    constant.ResponseValidationError.Code,
+		Message: constant.ResponseErrorNotFound.Description,
 		Data:    data,
 		Errors:  errors,
 	}

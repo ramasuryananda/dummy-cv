@@ -22,5 +22,15 @@ func NewRouter(e *echo.Echo, handler *app.Handlers, middleware *app.Middleware) 
 	e.Use(middleware.PanicHandler.HandlePanic())
 	e.Use(middleware.HttpWrapper.HttpWrapper())
 
+	RegisterProfileRoutes(router)
+
 	return router
+}
+
+func RegisterProfileRoutes(router *Router) {
+	profileGroup := router.Echo.Group("api/profile")
+	profileGroup.GET("/:code", router.Handler.Profile.HanmdleGetProfile)
+	profileGroup.POST("", router.Handler.Profile.HandleCreateProfile)
+	profileGroup.PUT("/:code", router.Handler.Profile.HandleUpdateProfile)
+
 }

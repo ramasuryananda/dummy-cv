@@ -9,6 +9,8 @@ import (
 
 type RepositoryProvider interface {
 	GetUserByProfileCode(ctx context.Context, profileCode int) (entity.Profile, error)
+	InsertProfile(ctx context.Context, profileData entity.Profile) (profileCode uint64, err error)
+	UpdateProfile(ctx context.Context, profileData entity.Profile) (profileCode uint64, err error)
 }
 
 type Repository struct {
