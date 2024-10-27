@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/ramasuryananda/dummy-cv/internal/handler/education"
 	"github.com/ramasuryananda/dummy-cv/internal/handler/employment"
 	profile_photo "github.com/ramasuryananda/dummy-cv/internal/handler/photo"
 	"github.com/ramasuryananda/dummy-cv/internal/handler/profile"
@@ -13,6 +14,7 @@ type Handlers struct {
 	ProfilePhoto      *profile_photo.Handler
 	WorkingExperience *working_experience.Handler
 	Employment        *employment.Handler
+	Education         *education.Handler
 }
 
 // New initializes handler layer.
@@ -22,5 +24,6 @@ func NewHandler(useCase *UseCases) *Handlers {
 		ProfilePhoto:      profile_photo.New(useCase.PhotoProfile),
 		WorkingExperience: working_experience.New(useCase.WorkingExperience),
 		Employment:        employment.New(useCase.Employment),
+		Education:         education.New(useCase.Education),
 	}
 }
