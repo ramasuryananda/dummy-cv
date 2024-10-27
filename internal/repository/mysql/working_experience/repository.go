@@ -9,7 +9,7 @@ import (
 
 type RepositoryProvider interface {
 	SaveWorkingExperience(ctx context.Context, data entity.WorkingExperience) (err error)
-	GetWorkingExperienceByProfileCode(ctx context.Context, code int) (workingExperience entity.WorkingExperience, err error)
+	GetWorkingExperienceByProfileCode(ctx context.Context, code uint64) (workingExperience entity.WorkingExperience, err error)
 }
 
 type Repository struct {

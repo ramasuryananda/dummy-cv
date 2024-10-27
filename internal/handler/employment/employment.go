@@ -1,4 +1,4 @@
-package profile
+package employment
 
 import (
 	"github.com/labstack/echo/v4"
@@ -9,66 +9,68 @@ import (
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/writer"
 )
 
-func (h *Handler) HanmdleGetProfile(c echo.Context) error {
+func (h *Handler) HandleGetUserEmployment(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	var input request.GetUserProfileRequest
+	var input request.GetEmploymentRequest
 	if err := c.Bind(&input); err != nil {
-		logger.Error(ctx, nil, err, "c.Bind() error - HanmdleGetProfile")
+		logger.Error(ctx, nil, err, "c.Bind() error - HandleGetUserEmployment")
 		response := writer.APIResponse(constant.ResponseBadRequest.Code, constant.ResponseBadRequest.Description, nil)
 		return c.JSON(constant.ResponseBadRequest.Status, response)
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.GetUserProfileRequest{})
-		logger.Warning(ctx, nil, err, "c.Validate() error - HanmdleGetProfile")
+		trans := translator.TranslateError(err, request.GetEmploymentRequest{})
+		logger.Warning(ctx, nil, err, "c.Validate() error - HandleGetUserEmployment")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)
 	}
 
-	response, status := h.profileUsecase.GetUserProfile(ctx, input.ProfileCode)
+	response, status := h.employmentUsecase.GetUserEmployment(ctx, input)
 
 	return c.JSON(status, response)
 }
 
-func (handler *Handler) HandleCreateProfile(c echo.Context) error {
+func (h *Handler) HandleCreateEmployment(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	var input request.CreateProfileRequest
+	var input request.CreateEmploymentRequest
 	if err := c.Bind(&input); err != nil {
-		logger.Error(ctx, nil, err, "c.Bind() error - HandleCreateProfile")
+		logger.Error(ctx, nil, err, "c.Bind() error - HandleCreateEmployment")
 		response := writer.APIResponse(constant.ResponseBadRequest.Code, constant.ResponseBadRequest.Description, nil)
 		return c.JSON(constant.ResponseBadRequest.Status, response)
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.CreateProfileRequest{})
-		logger.Warning(ctx, nil, err, "c.Validate() error - HandleCreateProfile")
+		trans := translator.TranslateError(err, request.CreateEmploymentRequest{})
+		logger.Warning(ctx, nil, err, "c.Validate() error - HandleCreateEmployment")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)
 	}
 
-	resp, status := handler.profileUsecase.CreateUserProfile(ctx, input)
-	return c.JSON(status, resp)
+	response, status := h.employmentUsecase.CreateEmploymentData(ctx, input)
+
+	return c.JSON(status, response)
 }
 
-func (handler *Handler) HandleUpdateProfile(c echo.Context) error {
+func (h *Handler) HandleDeleteEmployment(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	var input request.UpdateProfileRequest
+	var input request.DeleteEmploymentRequest
 	if err := c.Bind(&input); err != nil {
-		logger.Error(ctx, nil, err, "c.Bind() error - HandleUpdateProfile")
+		logger.Error(ctx, nil, err, "c.Bind() error - HandleDeleteEmployment")
 		response := writer.APIResponse(constant.ResponseBadRequest.Code, constant.ResponseBadRequest.Description, nil)
 		return c.JSON(constant.ResponseBadRequest.Status, response)
 	}
 
 	if err := c.Validate(input); err != nil {
-		trans := translator.TranslateError(err, request.UpdateProfileRequest{})
-		logger.Warning(ctx, nil, err, "c.Validate() error - HandleUpdateProfile")
+		trans := translator.TranslateError(err, request.DeleteEmploymentRequest{})
+		logger.Warning(ctx, nil, err, "c.Validate() error - HandleDeleteEmployment")
 		response := writer.APIValidationResponse(nil, trans)
 		return c.JSON(constant.ResponseValidationError.Status, response)
 	}
 
-	resp, status := handler.profileUsecase.UpdateUserProfile(ctx, input)
-	return c.JSON(status, resp)
+	response, status := h.employmentUsecase.DeleteEmploymentData(ctx, input)
+
+	return c.JSON(status, response)
 }

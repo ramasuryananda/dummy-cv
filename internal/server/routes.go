@@ -25,6 +25,7 @@ func NewRouter(e *echo.Echo, handler *app.Handlers, middleware *app.Middleware) 
 	RegisterProfileRoutes(router)
 	RegisterProfilePhotoRoutes(router)
 	RegisterWorkingExperienceRoutes(router)
+	RegisterEmploymentRoutes(router)
 
 	return router
 }
@@ -49,4 +50,11 @@ func RegisterWorkingExperienceRoutes(router *Router) {
 	workingExperienceGroup := router.Echo.Group("api/working-experience")
 	workingExperienceGroup.PUT("/:code", router.Handler.WorkingExperience.HandleUpsertWorkingExperience)
 	workingExperienceGroup.GET("/:code", router.Handler.WorkingExperience.HandleGetWorkingExperience)
+}
+
+func RegisterEmploymentRoutes(router *Router) {
+	employmentGroup := router.Echo.Group("api/employment")
+	employmentGroup.GET("/:code", router.Handler.Employment.HandleGetUserEmployment)
+	employmentGroup.POST("/:code", router.Handler.Employment.HandleCreateEmployment)
+	employmentGroup.DELETE("/:code", router.Handler.Employment.HandleDeleteEmployment)
 }

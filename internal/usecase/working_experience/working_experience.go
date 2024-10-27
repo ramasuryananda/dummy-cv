@@ -26,11 +26,11 @@ func (uc *UseCase) UpsertUserWorkingExperience(ctx context.Context, req request.
 		return
 	}
 
-	workingExperienceData, err := uc.workingExperienceRepository.GetWorkingExperienceByProfileCode(ctx, int(userProfileData.ProfileCode))
+	workingExperienceData, err := uc.workingExperienceRepository.GetWorkingExperienceByProfileCode(ctx, userProfileData.ProfileCode)
 	if err != nil {
 		if !errors.Is(err, constant.ErrorDatabaseNotFound) {
-			resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
-			httpStatus = constant.ResponseErrorNotFound.Status
+			resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
+			httpStatus = constant.ResponseInternalServerError.Status
 			return
 		}
 	}

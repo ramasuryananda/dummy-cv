@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (r *Repository) GetUserByProfileCode(ctx context.Context, profileCode int) (profile entity.Profile, err error) {
+func (r *Repository) GetUserByProfileCode(ctx context.Context, profileCode uint64) (profile entity.Profile, err error) {
 	err = r.db.Table(profile.TableName()).Where("profile_code = ?", profileCode).First(&profile).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

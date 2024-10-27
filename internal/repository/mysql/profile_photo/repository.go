@@ -8,7 +8,7 @@ import (
 )
 
 type RepositoryProvider interface {
-	GetUserProfilePhotoByProfileCode(ctx context.Context, profileCode int) (profilePhoto entity.ProfilePhoto, err error)
+	GetUserProfilePhotoByProfileCode(ctx context.Context, profileCode uint64) (profilePhoto entity.ProfilePhoto, err error)
 	SaveUserProfilePhoto(ctx context.Context, profilePhoto entity.ProfilePhoto) (err error)
 	DeleteUserProfilePhoto(ctx context.Context, profilePhoto entity.ProfilePhoto) (err error)
 }

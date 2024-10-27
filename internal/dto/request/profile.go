@@ -1,7 +1,7 @@
 package request
 
 type GetUserProfileRequest struct {
-	ProfileCode int `param:"code" validate:"required,numeric"`
+	ProfileCode uint64 `param:"code" validate:"required,numeric"`
 }
 
 type CreateProfileRequest struct {
@@ -21,7 +21,7 @@ type CreateProfileRequest struct {
 }
 
 type UpdateProfileRequest struct {
-	ProfileCode    int    `param:"code" validate:"required,numeric"`
+	ProfileCode    uint64 `param:"code" validate:"required,numeric"`
 	WantedJobTitle string `json:"wantedJobTitle" name:"Wanted Job Title" validate:"required,max=255"`
 	FirstName      string `json:"firstName" name:"First Name" validate:"required,max=50"`
 	LastName       string `json:"lastName" name:"Last Name" validate:"omitempty,max=50"`

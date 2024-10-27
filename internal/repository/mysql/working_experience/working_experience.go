@@ -18,7 +18,7 @@ func (r *Repository) SaveWorkingExperience(ctx context.Context, data entity.Work
 	return
 }
 
-func (r *Repository) GetWorkingExperienceByProfileCode(ctx context.Context, code int) (workingExperience entity.WorkingExperience, err error) {
+func (r *Repository) GetWorkingExperienceByProfileCode(ctx context.Context, code uint64) (workingExperience entity.WorkingExperience, err error) {
 	result := r.db.Table(workingExperience.TableName()).Where("profile_code = ?", code).First(&workingExperience)
 	if err = result.Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

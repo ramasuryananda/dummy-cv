@@ -13,7 +13,7 @@ import (
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/writer"
 )
 
-func (uc *UseCase) GetUserProfile(ctx context.Context, code int) (resp writer.Response, httpStatus int) {
+func (uc *UseCase) GetUserProfile(ctx context.Context, code uint64) (resp writer.Response, httpStatus int) {
 
 	userProfileData, err := uc.profileRepository.GetUserByProfileCode(ctx, code)
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 )
 
 type UseCaseProvider interface {
-	GetUserProfile(ctx context.Context, code int) (resp writer.Response, httpStatus int)
+	GetUserProfile(ctx context.Context, code uint64) (resp writer.Response, httpStatus int)
 	CreateUserProfile(ctx context.Context, req request.CreateProfileRequest) (resp writer.Response, httpStatus int)
 	UpdateUserProfile(ctx context.Context, req request.UpdateProfileRequest) (resp writer.Response, httpStatus int)
 }
