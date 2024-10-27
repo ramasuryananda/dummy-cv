@@ -5,6 +5,7 @@ import (
 	"github.com/ramasuryananda/dummy-cv/internal/usecase/employment"
 	profile_photo "github.com/ramasuryananda/dummy-cv/internal/usecase/photo"
 	"github.com/ramasuryananda/dummy-cv/internal/usecase/profile"
+	"github.com/ramasuryananda/dummy-cv/internal/usecase/skill"
 	"github.com/ramasuryananda/dummy-cv/internal/usecase/working_experience"
 )
 
@@ -14,6 +15,7 @@ type UseCases struct {
 	WorkingExperience working_experience.UseCaseProvider
 	Employment        employment.UseCaseProvider
 	Education         education.UseCaseProvider
+	Skill             skill.UseCaseProvider
 }
 
 // NewUseCase initializes useCase layer.
@@ -24,5 +26,6 @@ func NewUseCase(repositories *Repositories) *UseCases {
 		WorkingExperience: working_experience.New(repositories.WorkingExperience, repositories.Profile),
 		Employment:        employment.New(repositories.EmploymentRepository, repositories.Profile),
 		Education:         education.New(repositories.EducationRepository, repositories.Profile),
+		Skill:             skill.New(repositories.SkillRepository, repositories.Profile),
 	}
 }

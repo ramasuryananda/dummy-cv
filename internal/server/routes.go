@@ -27,6 +27,7 @@ func NewRouter(e *echo.Echo, handler *app.Handlers, middleware *app.Middleware) 
 	RegisterWorkingExperienceRoutes(router)
 	RegisterEmploymentRoutes(router)
 	RegisterEducationRoute(router)
+	RegisterSkillRoute(router)
 
 	return router
 }
@@ -65,4 +66,11 @@ func RegisterEducationRoute(router *Router) {
 	educationGroup.GET("/:code", router.Handler.Education.HandleGetUserEducation)
 	educationGroup.POST("/:code", router.Handler.Education.HandleCreateEducation)
 	educationGroup.DELETE("/:code", router.Handler.Education.HandleDeleteEducation)
+}
+
+func RegisterSkillRoute(router *Router) {
+	skillGroup := router.Echo.Group("api/skill")
+	skillGroup.GET("/:code", router.Handler.Skill.HandleGetUserSkill)
+	skillGroup.POST("/:code", router.Handler.Skill.HandleCreateSkill)
+	skillGroup.DELETE("/:code", router.Handler.Skill.HandleDeleteSkill)
 }

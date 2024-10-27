@@ -1,20 +1,17 @@
-package education
+package skill
 
 import (
 	"context"
-	"database/sql"
 	"errors"
-	"time"
 
 	"github.com/ramasuryananda/dummy-cv/internal/constant"
 	"github.com/ramasuryananda/dummy-cv/internal/dto/entity"
-	"github.com/ramasuryananda/dummy-cv/internal/dto/general"
 	"github.com/ramasuryananda/dummy-cv/internal/dto/request"
 	"github.com/ramasuryananda/dummy-cv/internal/dto/response"
 	"github.com/ramasuryananda/dummy-cv/internal/pkg/writer"
 )
 
-func (uc *UseCase) GetUserEducation(ctx context.Context, req request.GetEducationRequest) (resp writer.Response, httpStatus int) {
+func (uc *UseCase) GetUserSkill(ctx context.Context, req request.GetSkillRequest) (resp writer.Response, httpStatus int) {
 
 	userProfileData, err := uc.profileRepository.GetUserByProfileCode(ctx, req.ProfileCode)
 	if err != nil {
@@ -29,23 +26,19 @@ func (uc *UseCase) GetUserEducation(ctx context.Context, req request.GetEducatio
 		return
 	}
 
-	educationData, err := uc.educationRepository.GetEducationByProfileCode(ctx, userProfileData.ProfileCode)
+	skillData, err := uc.skillRepository.GetSkillByProfileCode(ctx, userProfileData.ProfileCode)
 	if err != nil {
 		resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
 		httpStatus = constant.ResponseErrorNotFound.Status
 		return
 	}
 
-	respData := make([]response.EducationDataResponse, 0, len(educationData))
-	for _, data := range educationData {
-		respData = append(respData, response.EducationDataResponse{
-			ID:          data.ID,
-			School:      data.School,
-			Degree:      data.Degree,
-			StartDate:   general.YMDDate(data.StartDate),
-			EndDate:     general.YMDDate(data.EndDate.Time),
-			City:        data.City,
-			Description: data.Description,
+	respData := make([]response.SkillDataResponse, 0, len(skillData))
+	for _, data := range skillData {
+		respData = append(respData, response.SkillDataResponse{
+			ID:    data.ID,
+			Skill: data.Skill,
+			Level: data.Level,
 		})
 	}
 
@@ -54,7 +47,7 @@ func (uc *UseCase) GetUserEducation(ctx context.Context, req request.GetEducatio
 	return
 }
 
-func (uc *UseCase) CreateEducationData(ctx context.Context, req request.CreateEducationRequest) (resp writer.Response, httpStatus int) {
+func (uc *UseCase) CreateSkillData(ctx context.Context, req request.CreateSkillRequest) (resp writer.Response, httpStatus int) {
 
 	userProfileData, err := uc.profileRepository.GetUserByProfileCode(ctx, req.ProfileCode)
 	if err != nil {
@@ -69,47 +62,20 @@ func (uc *UseCase) CreateEducationData(ctx context.Context, req request.CreateEd
 		return
 	}
 
-	startDate, err := time.ParseInLocation(constant.DateFormatDDMMYYY, req.StartDate, time.Now().Location())
-	if err != nil {
-		resp = writer.APIErrorResponse(constant.ResponseBadRequest.Code, constant.ResponseBadRequest.Description, err)
-		httpStatus = constant.ResponseBadRequest.Status
-		return
-	}
-
-	var endDate sql.NullTime
-
-	if req.EndDate != "" {
-		date, err := time.ParseInLocation(constant.DateFormatDDMMYYY, req.EndDate, time.Now().Location())
-		if err != nil {
-			resp = writer.APIErrorResponse(constant.ResponseBadRequest.Code, constant.ResponseBadRequest.Description, err)
-			httpStatus = constant.ResponseBadRequest.Status
-			return
-		}
-
-		endDate = sql.NullTime{
-			Valid: true,
-			Time:  date,
-		}
-	}
-
-	education := entity.Education{
+	skill := entity.Skill{
 		ProfileCode: userProfileData.ProfileCode,
-		School:      req.School,
-		Degree:      req.Degree,
-		StartDate:   startDate,
-		EndDate:     endDate,
-		City:        req.City,
-		Description: req.Description,
+		Skill:       req.Skill,
+		Level:       req.Level,
 	}
 
-	lastID, err := uc.educationRepository.CreateEducationData(ctx, education)
+	lastID, err := uc.skillRepository.CreateSkillData(ctx, skill)
 	if err != nil {
 		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
 		httpStatus = constant.ResponseInternalServerError.Status
 		return
 	}
 
-	respData := response.CreateEmploymentResponse{
+	respData := response.CreateSkillResponse{
 		Id:          lastID,
 		ProfileCode: userProfileData.ProfileCode,
 	}
@@ -119,9 +85,9 @@ func (uc *UseCase) CreateEducationData(ctx context.Context, req request.CreateEd
 	return
 }
 
-func (uc *UseCase) DeleteEducationData(ctx context.Context, req request.DeleteEducationRequest) (resp writer.Response, httpStatus int) {
+func (uc *UseCase) DeleteSkillData(ctx context.Context, req request.DeleteSkillRequest) (resp writer.Response, httpStatus int) {
 
-	educationData, err := uc.educationRepository.GetFirstEducationByProfileCodeandID(ctx, req.ProfileCode, req.ID)
+	skillData, err := uc.skillRepository.GetFirstSkillByProfileCodeandID(ctx, req.ProfileCode, req.ID)
 	if err != nil {
 		if errors.Is(err, constant.ErrorDatabaseNotFound) {
 			resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
@@ -134,14 +100,14 @@ func (uc *UseCase) DeleteEducationData(ctx context.Context, req request.DeleteEd
 		return
 	}
 
-	err = uc.educationRepository.DeleteEducationData(ctx, educationData.ProfileCode, educationData.ID)
+	err = uc.skillRepository.DeleteSkillData(ctx, skillData.ProfileCode, skillData.ID)
 	if err != nil {
 		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
 		httpStatus = constant.ResponseInternalServerError.Status
 		return
 	}
 
-	respData := response.DeleteEmploymentResponse{
+	respData := response.DeleteSkillResponse{
 		ProfileCode: req.ProfileCode,
 	}
 
