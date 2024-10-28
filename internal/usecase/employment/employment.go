@@ -31,8 +31,8 @@ func (uc *UseCase) GetUserEmployment(ctx context.Context, req request.GetEmploym
 
 	employmentData, err := uc.employmentRepository.GetEmploymentByProfileCode(ctx, userProfileData.ProfileCode)
 	if err != nil {
-		resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
-		httpStatus = constant.ResponseErrorNotFound.Status
+		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
+		httpStatus = constant.ResponseInternalServerError.Status
 		return
 	}
 
