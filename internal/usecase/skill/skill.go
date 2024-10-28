@@ -28,8 +28,8 @@ func (uc *UseCase) GetUserSkill(ctx context.Context, req request.GetSkillRequest
 
 	skillData, err := uc.skillRepository.GetSkillByProfileCode(ctx, userProfileData.ProfileCode)
 	if err != nil {
-		resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
-		httpStatus = constant.ResponseErrorNotFound.Status
+		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
+		httpStatus = constant.ResponseInternalServerError.Status
 		return
 	}
 
@@ -86,7 +86,6 @@ func (uc *UseCase) CreateSkillData(ctx context.Context, req request.CreateSkillR
 }
 
 func (uc *UseCase) DeleteSkillData(ctx context.Context, req request.DeleteSkillRequest) (resp writer.Response, httpStatus int) {
-
 	skillData, err := uc.skillRepository.GetFirstSkillByProfileCodeandID(ctx, req.ProfileCode, req.ID)
 	if err != nil {
 		if errors.Is(err, constant.ErrorDatabaseNotFound) {
