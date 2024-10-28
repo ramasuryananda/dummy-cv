@@ -15,7 +15,6 @@ import (
 )
 
 func (uc *UseCase) GetUserEmployment(ctx context.Context, req request.GetEmploymentRequest) (resp writer.Response, httpStatus int) {
-
 	userProfileData, err := uc.profileRepository.GetUserByProfileCode(ctx, req.ProfileCode)
 	if err != nil {
 		if errors.Is(err, constant.ErrorDatabaseNotFound) {

@@ -31,8 +31,8 @@ func (uc *UseCase) GetUserEducation(ctx context.Context, req request.GetEducatio
 
 	educationData, err := uc.educationRepository.GetEducationByProfileCode(ctx, userProfileData.ProfileCode)
 	if err != nil {
-		resp = writer.APIErrorResponse(constant.ResponseErrorNotFound.Code, constant.ResponseErrorNotFound.Description, err)
-		httpStatus = constant.ResponseErrorNotFound.Status
+		resp = writer.APIErrorResponse(constant.ResponseInternalServerError.Code, constant.ResponseInternalServerError.Description, err)
+		httpStatus = constant.ResponseInternalServerError.Status
 		return
 	}
 
@@ -55,7 +55,6 @@ func (uc *UseCase) GetUserEducation(ctx context.Context, req request.GetEducatio
 }
 
 func (uc *UseCase) CreateEducationData(ctx context.Context, req request.CreateEducationRequest) (resp writer.Response, httpStatus int) {
-
 	userProfileData, err := uc.profileRepository.GetUserByProfileCode(ctx, req.ProfileCode)
 	if err != nil {
 		if errors.Is(err, constant.ErrorDatabaseNotFound) {
@@ -109,7 +108,7 @@ func (uc *UseCase) CreateEducationData(ctx context.Context, req request.CreateEd
 		return
 	}
 
-	respData := response.CreateEmploymentResponse{
+	respData := response.CreateEducationResponse{
 		Id:          lastID,
 		ProfileCode: userProfileData.ProfileCode,
 	}
@@ -141,7 +140,7 @@ func (uc *UseCase) DeleteEducationData(ctx context.Context, req request.DeleteEd
 		return
 	}
 
-	respData := response.DeleteEmploymentResponse{
+	respData := response.DeleteEducationResponse{
 		ProfileCode: req.ProfileCode,
 	}
 
